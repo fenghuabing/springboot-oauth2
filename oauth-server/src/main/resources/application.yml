@@ -1,0 +1,21 @@
+server:
+  port: 8080
+
+#security:
+#  oauth2:
+#    client:
+#      client-id: clientId
+#      client-secret: clientSecret
+#      scope: all,scope1, scope2, scope3, scope4
+#      registered-redirect-uri: http://www.baidu.com
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/oauth?serverTimezone=Asia/Shanghai&useSSL=false&characterEncoding=utf-8&createDatabaseIfNotExist=true&allowMultiQueries=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#  security:
+#    user:
+#      name: admin
+#      password: admin
