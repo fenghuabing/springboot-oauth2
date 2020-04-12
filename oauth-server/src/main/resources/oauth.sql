@@ -2,21 +2,28 @@
 SET NAMES utf8;
 SET FOREIGN_KEY_CHECKS = 0;
 
--- ----------------------------
---  Table structure for `authorities`
--- ----------------------------
-DROP TABLE IF EXISTS `authorities`;
-CREATE TABLE `authorities` (
-  `username` varchar(255) DEFAULT NULL,
-  `authority` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE USERS
+(
+    USERNAME VARCHAR(50) NOT NULL,
+    PASSWORD VARCHAR(68) NOT NULL,
+    ENABLED TINYINT(1) NOT NULL,
+    PRIMARY KEY(USERNAME)
+);
+/*admin:123*/
+INSERT INTO USERS (USERNAME, PASSWORD, ENABLED) VALUES('admin','$2a$10$MG4gkt5DI9yxx9mQPmUoy.wZConHVipO2kVaP.te8k3QAyQL7/OM2',1);
+INSERT INTO USERS (USERNAME, PASSWORD, ENABLED) VALUES('manager','$2a$10$cRqfrdolNVFW6sAju0eNEOE0VC29aIyXwfsEsY2Fz2axy3MnH8ZGa',1);
 
--- ----------------------------
---  Records of `authorities`
--- ----------------------------
-BEGIN;
-INSERT INTO `authorities` VALUES ('reader', 'ROLE_USER'), ('writer', 'ROLE_USER');
-COMMIT;
+CREATE TABLE AUTHORITIES
+(
+    USERNAME VARCHAR(50) NOT NULL,
+    AUTHORITY VARCHAR(68) NOT NULL,
+    FOREIGN KEY (USERNAME) REFERENCES USERS(USERNAME)
+);
+
+INSERT INTO AUTHORITIES VALUES('admin','ROLE_EMPLOYEE');
+INSERT INTO AUTHORITIES VALUES('admin','ROLE_USER');
+INSERT INTO AUTHORITIES VALUES('manager','ROLE_MANAGER');
+INSERT INTO AUTHORITIES VALUES('manager','ROLE_USER');
 
 -- ----------------------------
 --  Table structure for `clientdetails`
@@ -123,21 +130,3 @@ CREATE TABLE `oauth_refresh_token` (
   `authentication` blob
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- ----------------------------
---  Table structure for `users`
--- ----------------------------
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users` (
-  `username` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  `enabled` char(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
---  Records of `users`
--- ----------------------------
-BEGIN;
-INSERT INTO `users` VALUES ('reader', 'reader', 'Y'), ('writer', 'writer', 'Y');
-COMMIT;
-
-SET FOREIGN_KEY_CHECKS = 1;

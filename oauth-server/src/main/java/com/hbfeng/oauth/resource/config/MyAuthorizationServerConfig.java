@@ -7,6 +7,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -27,12 +28,8 @@ import javax.sql.DataSource;
 @EnableAuthorizationServer
 public class MyAuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-
     @Autowired
     private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private UserDetailsService myUserDetailsService;
 
     @Autowired
     public DataSource dataSource;
@@ -41,12 +38,6 @@ public class MyAuthorizationServerConfig extends AuthorizationServerConfigurerAd
     public TokenStore tokenStore() {
         return new JdbcTokenStore(dataSource);
     }
-
-//    @Bean
-//    public UserDetailsService userDetails() { return new JdbcUserDetailsManager(dataSource); }
-
-//    @Autowired
-//    public ClientDetailsService clientDetailsService;
 
     @Bean
     public ClientDetailsService clientDetails() {
@@ -74,8 +65,6 @@ public class MyAuthorizationServerConfig extends AuthorizationServerConfigurerAd
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints
                 .authenticationManager(authenticationManager)
-                .userDetailsService(myUserDetailsService)
-//                .userDetailsService(userDetails())
                 .tokenStore(tokenStore());
     }
 
